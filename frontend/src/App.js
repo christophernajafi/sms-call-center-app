@@ -6,6 +6,8 @@ function App() {
   const [user, setUser] = useImmer({
     username: "",
     mobileNumber: "",
+    verificationCode: "",
+    verificationSent: false,
   });
 
   const sendSmsCode = async () => {
@@ -14,7 +16,24 @@ function App() {
       await axios.post("/login", {
         to: user.mobileNumber,
         username: user.username,
+        channel: "sms",
       });
+      setUser((draft) => {
+        draft.verificationSent = true;
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const sendVerificationCode = async () => {
+    try {
+      console.log("Sending verification");
+      const { data } = await axios.post("/verify", {
+        to: user.mobileNumber,
+        code: user.verificationCode,
+      });
+      console.log("verification response: ", data);
     } catch (error) {
       console.log(error.message);
     }
@@ -22,7 +41,12 @@ function App() {
 
   return (
     <div>
-      <Login user={user} setUser={setUser} sendSmsCode={sendSmsCode} />
+      <Login
+        user={user}
+        setUser={setUser}
+        sendSmsCode={sendSmsCode}
+        sendVerificationCode={sendVerificationCode}
+      />
     </div>
   );
 }

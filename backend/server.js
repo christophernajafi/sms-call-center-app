@@ -2,18 +2,25 @@ require("dotenv").config();
 
 const express = require("express");
 const twilio = require("./Twilio");
+const bodyParser = require("body-parser");
+const cors = require("cors");
 
 const app = express();
+
+app.use(bodyParser.json());
+app.use(cors());
+
 const PORT = 3001;
 
 app.get("/test", (req, res) => {
   res.send("Welcome to Twilio");
 });
 
-app.get("/login", async (req, res) => {
+app.post("/login", async (req, res) => {
   try {
-    res.send("logging in");
-    const data = await twilio.sendVerifyAsync(process.env.MOBILE, "sms");
+    console.log("logging in");
+    const { to, username, channel } = req.body;
+    const data = await twilio.sendVerifyAsync(to, channel);
     res.send(data);
   } catch (error) {
     console.log(error.message);
@@ -22,12 +29,10 @@ app.get("/login", async (req, res) => {
 
 app.get("/verify", async (req, res) => {
   try {
-    res.send("verifying code");
-    const data = await twilio.verifyCodeAsync(
-      process.env.MOBILE,
-      req.query.code
-    );
-    return data;
+    console.log("verifying code");
+    const { to, code } = req.body;
+    const data = await twilio.verifyCodeAsync(to, code);
+    res.send(data);
   } catch (error) {
     console.log(error.message);
   }

@@ -1,18 +1,25 @@
 import React from "react";
 import { Grid, Header, Form, Segment, Button } from "semantic-ui-react";
 
-function Login({ user: { username, mobileNumber }, setUser, sendSmsCode }) {
+function Login({
+  user: { username, mobileNumber, verificationCode, verificationSent },
+  setUser,
+  sendSmsCode,
+  sendVerificationCode,
+}) {
   const populateFields = (event, data) => {
     setUser((draft) => {
       draft[data.name] = data.value;
     });
   };
 
+  const onChange = (event, data) => populateFields(event, data);
+
   return (
     <Grid textAlign="center" verticalAlign="middle" style={{ height: "100vh" }}>
       <Grid.Column style={{ maxWidth: 450 }}>
         <Header as="h2" color="teal" textAlign="center">
-          Login into your account
+          Login to Your Account
         </Header>
         <Form>
           <Segment stacked>
@@ -22,7 +29,7 @@ function Login({ user: { username, mobileNumber }, setUser, sendSmsCode }) {
               iconPosition="left"
               placeholder="Username"
               value={username}
-              onChange={(event, data) => populateFields(event, data)}
+              onChange={onChange}
               name="username"
             />
             <Form.Input
@@ -31,11 +38,27 @@ function Login({ user: { username, mobileNumber }, setUser, sendSmsCode }) {
               iconPosition="left"
               placeholder="Mobile Number"
               value={mobileNumber}
-              onChange={(event, data) => populateFields(event, data)}
+              onChange={onChange}
               name="mobileNumber"
             />
-            <Button color="teal" fluid size="large" onClick={sendSmsCode}>
-              Login/Signup
+            {verificationSent && (
+              <Form.Input
+                fluid
+                icon="key"
+                iconPosition="left"
+                placeholder="Enter Verification Code"
+                value={verificationCode}
+                onChange={onChange}
+                name="verificationCode"
+              />
+            )}
+            <Button
+              color="teal"
+              fluid
+              size="large"
+              onClick={!verificationSent ? sendSmsCode : sendVerificationCode}
+            >
+              {!verificationSent ? "Login/Signup" : "Send Verification Code"}
             </Button>
           </Segment>
         </Form>
