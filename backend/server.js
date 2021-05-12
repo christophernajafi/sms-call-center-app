@@ -4,10 +4,28 @@ const express = require("express");
 const twilio = require("./Twilio");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const http = require("http");
+const socketIo = require("socket.io");
 
 const app = express();
+const server = http.createServer(app);
+
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+    methods: ["*"],
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("Socket connected", socket.id);
+  socket.on("disconnect", () => {
+    console.log("Socket disconnected", socket.id);
+  });
+});
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
 const PORT = 3001;
@@ -38,7 +56,7 @@ app.get("/verify", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log("##########################");
   console.log(`Listening on port ${PORT}`);
   console.log("##########################");

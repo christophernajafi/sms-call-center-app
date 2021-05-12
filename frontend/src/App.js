@@ -1,6 +1,8 @@
+import { useEffect } from "react";
 import Login from "./components/Login";
 import { useImmer } from "use-immer";
 import axios from "./utils/Axios";
+import socket from "./utils/SocketIo";
 
 function App() {
   const [user, setUser] = useImmer({
@@ -9,6 +11,16 @@ function App() {
     verificationCode: "",
     verificationSent: false,
   });
+
+  useEffect(() => {
+    // socket.on("connect", () => {
+    //   console.log("Socket disconnected");
+    // });
+    socket.on("disconnect", () => {
+      console.log("Socket disconnected");
+    });
+    return () => {};
+  }, []);
 
   const sendSmsCode = async () => {
     try {
