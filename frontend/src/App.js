@@ -3,6 +3,7 @@ import Login from "./components/Login";
 import { useImmer } from "use-immer";
 import axios from "./utils/Axios";
 import socket from "./utils/SocketIo";
+import useLocalStorage from "./hooks/useLocalStorage";
 
 function App() {
   const [user, setUser] = useImmer({
@@ -11,6 +12,8 @@ function App() {
     verificationCode: "",
     verificationSent: false,
   });
+
+  const [storedToken, setStoredToken] = useLocalStorage("token", null);
 
   useEffect(() => {
     // socket.on("connect", () => {
@@ -44,8 +47,10 @@ function App() {
       const { data } = await axios.post("/verify", {
         to: user.mobileNumber,
         code: user.verificationCode,
+        username: user.username,
       });
-      console.log("verification response: ", data);
+      console.log("received token", data.token);
+      setStoredToken(data.token);
     } catch (error) {
       console.log(error.message);
     }
@@ -53,12 +58,16 @@ function App() {
 
   return (
     <div>
-      <Login
-        user={user}
-        setUser={setUser}
-        sendSmsCode={sendSmsCode}
-        sendVerificationCode={sendVerificationCode}
-      />
+      {storedToken ? (
+        <h1>Call Center</h1>
+      ) : (
+        <Login
+          user={user}
+          setUser={setUser}
+          sendSmsCode={sendSmsCode}
+          sendVerificationCode={sendVerificationCode}
+        />
+      )}
     </div>
   );
 }

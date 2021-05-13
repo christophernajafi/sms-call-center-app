@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const http = require("http");
 const socketIo = require("socket.io");
+const jwt = require("./utils/Jwt");
 
 const app = express();
 const server = http.createServer(app);
@@ -39,18 +40,22 @@ app.post("/login", async (req, res) => {
     console.log("logging in");
     const { to, username, channel } = req.body;
     const data = await twilio.sendVerifyAsync(to, channel);
-    res.send(data);
+    res.send("Send code");
   } catch (error) {
     console.log(error.message);
   }
 });
 
-app.get("/verify", async (req, res) => {
+app.post("/verify", async (req, res) => {
   try {
     console.log("verifying code");
-    const { to, code } = req.body;
+    const { to, code, username } = req.body;
     const data = await twilio.verifyCodeAsync(to, code);
-    res.send(data);
+    if (data.status == "approved") {
+      const token = jwt.createJwt(username);
+      return res.send({ token });
+    }
+    res.status(401).send("Invalid token");
   } catch (error) {
     console.log(error.message);
   }
