@@ -1,11 +1,16 @@
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import Login from "./components/Login";
 import { useImmer } from "use-immer";
 import axios from "./utils/Axios";
 import socket from "./utils/SocketIo";
 import useLocalStorage from "./hooks/useLocalStorage";
+import CallCenter from "./components/CallCenter";
 
 function App() {
+  const [calls, setCalls] = useImmer({
+    calls: [],
+  });
+
   const [user, setUser] = useImmer({
     username: "",
     mobileNumber: "",
@@ -57,18 +62,21 @@ function App() {
   };
 
   return (
-    <div>
+    <Fragment>
       {storedToken ? (
-        <h1>Call Center</h1>
+        <CallCenter calls={calls} />
       ) : (
-        <Login
-          user={user}
-          setUser={setUser}
-          sendSmsCode={sendSmsCode}
-          sendVerificationCode={sendVerificationCode}
-        />
+        <Fragment>
+          <CallCenter calls={calls} />
+          <Login
+            user={user}
+            setUser={setUser}
+            sendSmsCode={sendSmsCode}
+            sendVerificationCode={sendVerificationCode}
+          />
+        </Fragment>
       )}
-    </div>
+    </Fragment>
   );
 }
 
