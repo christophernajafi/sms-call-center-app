@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useLocalStorage from "./useLocalStorage";
 import Axios from "../utils/Axios";
 
-function useTokenFromLocalStorage(initialValue) {
+const useTokenFromLocalStorage = (initialValue) => {
   const [value, setValue] = useLocalStorage("token", initialValue);
   const [isValid, setIsValid] = useState(false);
 
@@ -20,6 +20,6 @@ function useTokenFromLocalStorage(initialValue) {
   });
 
   return [value, setValue, isValid];
-}
+};
 
 export default useTokenFromLocalStorage;

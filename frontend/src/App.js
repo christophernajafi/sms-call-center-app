@@ -7,7 +7,7 @@ import useTokenFromLocalStorage from "./hooks/useTokenFromLocalStorage";
 import CallCenter from "./components/CallCenter";
 import * as Twilio from "twilio-client";
 
-function App() {
+const App = () => {
   const [calls, setCalls] = useImmer({
     calls: [],
   });
@@ -89,7 +89,7 @@ function App() {
     }
   };
 
-  function connectTwilioVoiceClient(twilioToken) {
+  const connectTwilioVoiceClient = (twilioToken) => {
     const device = new Twilio.Device(twilioToken, { debug: true });
     device.on("error", (error) => {
       console.error(error);
@@ -98,7 +98,7 @@ function App() {
       console.log("Incoming from Twilio");
       connection.accept();
     });
-  }
+  };
 
   const sendVerificationCode = async () => {
     try {
@@ -131,6 +131,6 @@ function App() {
       )}
     </Fragment>
   );
-}
+};
 
 export default App;

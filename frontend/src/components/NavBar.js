@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Menu, Image } from "semantic-ui-react";
 
-function NavBar() {
+const NavBar = () => {
   return (
     <Menu>
       <Container text>
@@ -19,6 +19,6 @@ function NavBar() {
       </Container>
     </Menu>
   );
-}
+};
 
 export default NavBar;

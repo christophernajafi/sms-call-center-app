@@ -1,12 +1,12 @@
 import React from "react";
 import { Grid, Header, Form, Segment, Button } from "semantic-ui-react";
 
-function Login({
+const Login = ({
   user: { username, mobileNumber, verificationCode, verificationSent },
   setUser,
   sendSmsCode,
   sendVerificationCode,
-}) {
+}) => {
   const populateFields = (event, data) => {
     setUser((draft) => {
       draft[data.name] = data.value;
@@ -65,6 +65,6 @@ function Login({
       </Grid.Column>
     </Grid>
   );
-}
+};
 
 export default Login;

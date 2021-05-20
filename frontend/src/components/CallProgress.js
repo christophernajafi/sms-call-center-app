@@ -2,10 +2,10 @@ import React from "react";
 import { Container, Step } from "semantic-ui-react";
 import socket from "../utils/SocketIo";
 
-function CallProgress({ call: { CallSid } }) {
-  function answerCall(sid) {
+const CallProgress = ({ call: { CallSid } }) => {
+  const answerCall = (sid) => {
     socket.client.emit("answer-call", { sid });
-  }
+  };
 
   return (
     <Container>
@@ -37,6 +37,6 @@ function CallProgress({ call: { CallSid } }) {
       </Step.Group>
     </Container>
   );
-}
+};
 
 export default CallProgress;

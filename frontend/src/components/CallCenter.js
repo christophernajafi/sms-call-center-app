@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import CallProgress from "./CallProgress";
 import NavBar from "./NavBar";
 
-function CallCenter({ calls }) {
+const CallCenter = ({ calls }) => {
   return (
     <Fragment>
       <NavBar />
@@ -11,6 +11,6 @@ function CallCenter({ calls }) {
       ))}
     </Fragment>
   );
-}
+};
 
 export default CallCenter;
