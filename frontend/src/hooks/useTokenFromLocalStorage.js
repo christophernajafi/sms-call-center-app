@@ -7,14 +7,18 @@ function useTokenFromLocalStorage(initialValue) {
   const [isValid, setIsValid] = useState(false);
 
   useEffect(() => {
+    async function checkToken() {
+      try {
+        const { data } = await Axios.post("/check-token", { token: value });
+        console.log("CheckToken", data);
+        setIsValid(data.isValid);
+      } catch (error) {
+        console.log(error);
+      }
+    }
     checkToken();
   });
 
-  async function checkToken() {
-    const { data } = await Axios.post("/check-token", { token: value });
-    console.log("CheckToken", data);
-    setIsValid(data.isValid);
-  }
   return [value, setValue, isValid];
 }
 

@@ -2,34 +2,35 @@ import React from "react";
 import { Container, Step } from "semantic-ui-react";
 import socket from "../utils/SocketIo";
 
-function CallProgress({ call }) {
+function CallProgress({ call: { CallSid } }) {
   function answerCall(sid) {
     socket.client.emit("answer-call", { sid });
   }
+
   return (
     <Container>
       <Step.Group fluid>
         <Step
           icon="phone"
           title="Ringing"
-          description={call.CallSid}
-          active={call.CallStatus === "ringing"}
-          completed={call.CallStatus !== "ringing"}
+          description={CallSid.CallSid}
+          active={CallSid.CallStatus === "ringing"}
+          completed={CallSid.CallStatus !== "ringing"}
         />
         <Step
           icon="cogs"
           title="In queue"
           description="User waiting in queue"
-          active={call.CallStatus === "enqueue"}
-          disabled={call.CallStatus === "ringing"}
-          onClick={() => answerCall(call.CallSid)}
+          active={CallSid.CallStatus === "enqueue"}
+          disabled={CallSid.CallStatus === "ringing"}
+          onClick={() => answerCall(CallSid.CallSid)}
         />
         <Step
           icon="headphones"
           title="Answered"
-          description="Answer by Juan"
+          description="Answer by John"
           disabled={
-            call.CallStatus === "ringing" || call.CallStatus === "enqueue"
+            CallSid.CallStatus === "ringing" || CallSid.CallStatus === "enqueue"
           }
         />
         <Step icon="times" title="Hang up" description="Missed call" />

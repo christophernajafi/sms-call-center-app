@@ -1,15 +1,15 @@
-import React from "react";
+import React, { Fragment } from "react";
 import CallProgress from "./CallProgress";
 import NavBar from "./NavBar";
 
 function CallCenter({ calls }) {
   return (
-    <div>
+    <Fragment>
       <NavBar />
       {calls.calls.map((call) => (
-        <CallProgress call={call} />
+        <CallProgress key={call.CallSid.CallSid} call={call} />
       ))}
-    </div>
+    </Fragment>
   );
 }
 
