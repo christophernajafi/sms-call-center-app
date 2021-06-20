@@ -1,8 +1,8 @@
 # SMS Call Center App
 
-Call center app that enables a customer service employee to receive customer calls by phone, put the calls in a call waiting queue, and then answer calls one at a time via a user interface.
+Call center app that enables a customer service employee to receive customer calls by phone, put the calls in a call waiting queue, and then answer calls one at a time via a web-based user interface.
 
-<!-- Screenshot: scale image, 25% -->
+![SMS Call Center](./screenshots/sms-call-center.png)
 
 ## Technology Stack
 
@@ -20,6 +20,6 @@ Call center app that enables a customer service employee to receive customer cal
 - Semantic UI React
 - Socket.IO Client
 
-## Author
+## Developer
 
 [Christopher Najafi](https://www.chrisnajafi.com/)
